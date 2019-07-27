@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tx.demo.dao.TblEmpDAO">
+  <resultMap id="BaseResultMap" type="com.tx.demo.pojo.TblEmp">
+    <id column="e_id" jdbcType="INTEGER" property="eId" />
+    <result column="e_name" jdbcType="VARCHAR" property="eName" />
+    <result column="e_gongzuo" jdbcType="VARCHAR" property="eGongzuo" />
+    <result column="e_gongzi" jdbcType="REAL" property="eGongzi" />
+    <result column="e_time" jdbcType="DATE" property="eTime" />
+    <result column="e_qian" jdbcType="REAL" property="eQian" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    e_id, e_name, e_gongzuo, e_gongzi, e_time, e_qian
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tbl_emp
+    where e_id = #{eId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from tbl_emp
+    where e_id = #{eId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.tx.demo.pojo.TblEmp">
+    insert into tbl_emp (e_id, e_name, e_gongzuo, 
+      e_gongzi, e_time, e_qian)
+    values (#{eId,jdbcType=INTEGER}, #{eName,jdbcType=VARCHAR}, #{eGongzuo,jdbcType=VARCHAR}, 
+      #{eGongzi,jdbcType=REAL}, #{eTime,jdbcType=DATE}, #{eQian,jdbcType=REAL})
+  </insert>
+  <insert id="insertSelective" parameterType="com.tx.demo.pojo.TblEmp">
+    insert into tbl_emp
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="eId != null">
+        e_id,
+      </if>
+      <if test="eName != null">
+        e_name,
+      </if>
+      <if test="eGongzuo != null">
+        e_gongzuo,
+      </if>
+      <if test="eGongzi != null">
+        e_gongzi,
+      </if>
+      <if test="eTime != null">
+        e_time,
+      </if>
+      <if test="eQian != null">
+        e_qian,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="eId != null">
+        #{eId,jdbcType=INTEGER},
+      </if>
+      <if test="eName != null">
+        #{eName,jdbcType=VARCHAR},
+      </if>
+      <if test="eGongzuo != null">
+        #{eGongzuo,jdbcType=VARCHAR},
+      </if>
+      <if test="eGongzi != null">
+        #{eGongzi,jdbcType=REAL},
+      </if>
+      <if test="eTime != null">
+        #{eTime,jdbcType=DATE},
+      </if>
+      <if test="eQian != null">
+        #{eQian,jdbcType=REAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tx.demo.pojo.TblEmp">
+    update tbl_emp
+    <set>
+      <if test="eName != null">
+        e_name = #{eName,jdbcType=VARCHAR},
+      </if>
+      <if test="eGongzuo != null">
+        e_gongzuo = #{eGongzuo,jdbcType=VARCHAR},
+      </if>
+      <if test="eGongzi != null">
+        e_gongzi = #{eGongzi,jdbcType=REAL},
+      </if>
+      <if test="eTime != null">
+        e_time = #{eTime,jdbcType=DATE},
+      </if>
+      <if test="eQian != null">
+        e_qian = #{eQian,jdbcType=REAL},
+      </if>
+    </set>
+    where e_id = #{eId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tx.demo.pojo.TblEmp">
+    update tbl_emp
+    set e_name = #{eName,jdbcType=VARCHAR},
+      e_gongzuo = #{eGongzuo,jdbcType=VARCHAR},
+      e_gongzi = #{eGongzi,jdbcType=REAL},
+      e_time = #{eTime,jdbcType=DATE},
+      e_qian = #{eQian,jdbcType=REAL}
+    where e_id = #{eId,jdbcType=INTEGER}
+  </update>
+</mapper>

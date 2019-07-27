@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<table border=1>
+		<thead>
+			<tr>
+				<th>部门编号</th>
+				<th>部门名称</th>
+				<th>员工名称</th>
+			</tr>
+		</thead>
+			<tbody id="tb">
+				
+			</tbody>
+	</table>
+	<a onclick="sy()">首页</a>
+	<a onclick="syy()">上一页</a>
+	<a onclick="xyy()">下一页</a>
+	<a onclick="wy()">尾页</a>
+</body>
+<script type="text/javascript" src="js/jquery-1.8.3.js"></script>
+<script type="text/javascript">
+
+	var fy;
+	function jz(url){
+		$.getJSON(url, function(result) {
+	 		fy=result
+			//alert(result)
+			$.each(result.list,function(i,obj){
+				tr=$("<tr id='wtr'>"+
+						"<td style='display:none'>"+obj.e_id+"</td>"+
+						"<td>"+obj.d_id+"</td>"+
+						"<td class='ck'>"+obj.d_name+"</td>"+
+						"<td>"+obj.e_name+"</td>"+
+					"</tr>")
+				$("#tb").append(tr)
+			})
+		})
+	}
+		
+	jz("/api/emps/queryall/"+1+"/"+2)
+	
+   //尾页
+  function wy(){
+	  $("#tb>tr").remove()
+	  jz("/api/emps/queryall/"+fy.lastPage+"/"+fy.pageSize)
+  }
+  
+ //首页
+    function sy(){
+	  	$("#tb>tr").remove()
+	  	jz("/api/emps/queryall/"+1+"/"+fy.pageSize)
+  }
+ 
+ //上一页
+     function syy(){
+  		if(fy.hasPreviousPage){
+  			jz("/api/emps/queryall/"+fy.prePage+"/"+fy.pageSize)
+			  $("#tb>tr").remove()
+		}else{
+			alert("没有上一页");
+		}
+  }
+ 
+     //下一页
+     function xyy(){
+ 		if(fy.hasNextPage){
+ 				  $("#tb>tr").remove()
+ 				  jz("/api/emps/queryall/"+fy.nextPage+"/"+fy.pageSize)
+		}else{
+			alert("没有下一页");
+			//return false;
+		}
+  }
+     
+  	$(document).on("click",".ck",function(e){
+		id=$(this).parent().find("td:eq(0)").text()
+		$.getJSON("/api/emps/queryid/"+id, function(result) {
+			$.each(result,function(i,obj){
+				tr=$("<tr>"+
+						"<td style='display:none'>"+obj.e_id+"</td>"+
+						"<td>"+obj.e_name+"</td>"+
+						"<td>"+obj.e_gongzuo+"</td>"+
+						"<td>"+obj.e_gongzi+"</td>"+
+						"<td>"+obj.e_time+"</td>"+
+						"<td>"+obj.e_qian+"</td>"+
+						"<td class='del'>删除</td>"+
+					"</tr>")
+				$("#wtr").append(tr)
+			})
+		})
+	})
+	
+	//删除
+	$(document).on("click",".del",function(e){
+		id=$(this).parent().find("td:eq(0)").text()
+		$.ajax({
+			type: "delete",
+			url: "/api/emps/delid/" + id,
+			contentType: "application/json",
+			dataType: "json",
+			success: function(json) {
+				if(json.code == 200) {
+					alert("删除成功")
+					history.go(0);
+				} else {
+					alert("删除失败")
+				}
+			}
+		});
+	})
+	
+</script>
+</html>

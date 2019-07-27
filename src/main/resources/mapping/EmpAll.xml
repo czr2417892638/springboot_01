@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tx.demo.dao.EmpAllDAO">
+	<select id="selectall" resultType="com.tx.demo.vo.EmpAllVo">
+		SELECT * 
+		FROM `tbl_dept` AS d
+		LEFT JOIN 
+		`tbl_emp` AS e
+		ON d.`e_id`=e.`e_id`
+	</select>
+	
+	<select id="selectbyid" resultType="com.tx.demo.vo.EmpAllVo">
+		SELECT * FROM `tbl_emp` WHERE `e_id`=#{eid}
+	</select>
+	
+	<delete id="delbyid">
+		DELETE FROM `tbl_emp` WHERE `e_id` =#{eid}
+	</delete>
+</mapper>
